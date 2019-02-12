@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 (function() {
   const directives = {};
 
@@ -16,24 +17,13 @@
       }
 
       directives[name] = callback;
-      console.log(directives);
     },
     compile(node) {
       const attrs = [...node.attributes];
-      const arrOfDirectives = [];
-
-      attrs.forEach(nodeAttr => {
-        const result = directives.find(directiveObj => {
-          return nodeAttr.name === directiveObj.name;
-        });
-
-        if (result) {
-          arrOfDirectives.push(result);
+      attrs.forEach(({ name }) => {
+        if (name in directives) {
+          directives[name](node);
         }
-      });
-
-      arrOfDirectives.forEach(directiveObj => {
-        directiveObj.callback(node);
       });
     },
     bootstrap(node) {
@@ -47,14 +37,22 @@
       });
     }
   };
+
+  smallAngular.directive('ng-show', function(el) {
+    console.log('calls directive ng-show on element', el);
+  });
+  smallAngular.directive('ng-hide', function(el) {
+    console.log('calls directive ng-hide on element', el);
+  });
+  smallAngular.directive('ng-model', function(el) {
+    console.log('calls directive ng-model on element', el);
+  });
+  smallAngular.directive('ng-click', function(el) {
+    console.log('calls directive ng-click on element', el);
+  });
+  smallAngular.directive('ng-uppercase', function(el) {
+    console.log('calls directive ng-uppercase on element', el);
+  });
+
   window.smallAngular = smallAngular;
 })();
-
-window.smallAngular.directive('ng-click', function() {console.log(111)});
-window.smallAngular.directive('ng-init', function(node) {
-  node.style.background = 'grey';
-  console.log(222);
-});
-window.smallAngular.directive('ng-repeat', function() {console.log(333)});
-
-//window.smallAngular.compile(document.querySelector('body'));
