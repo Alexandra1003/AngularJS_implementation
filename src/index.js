@@ -2,14 +2,6 @@
 (function() {
   const directives = {};
 
-  function findInitialNode() {
-    const arrOfAllNodes = Array.from(document.querySelectorAll('*'));
-
-    return arrOfAllNodes.find(node => {
-      return node.hasAttribute('ng-app');
-    });
-  }
-
   const smallAngular = {
     directive(name, callback) {
       if (typeof callback !== 'function') {
@@ -27,7 +19,7 @@
       });
     },
     bootstrap(node) {
-      const nodeElem = node ? node : findInitialNode();
+      const nodeElem = node ? node : document.querySelector('*[ng-app]');
 
       if (node) {
         nodeElem.setAttribute('ng-app', '');
