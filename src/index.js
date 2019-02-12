@@ -1,9 +1,9 @@
 (function() {
-  const directives = [{}];
+  const directives = [];
 
   const smallAngular = {
-    directive() {
-      // do smth
+    directive(name, callback) {
+      directives.push({ name, callback });
     },
     compile(node) {
       // do smth

@@ -189,7 +189,7 @@ module.exports = {
     'spaced-comment': ['error', 'always'],
     'wrap-regex': 'error',
     // ECMAScript 6
-    'arrow-body-style': ['error', 'as-needed'],
+    // 'arrow-body-style': ['error', 'as-needed'],
     'arrow-parens': ['error', 'as-needed'],
     'arrow-spacing': ['error', {
       'before': true,
