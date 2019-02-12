@@ -13,7 +13,6 @@
       }
 
       directives[name] = callback;
-      console.log(directives)
     },
     compile(node) {
       const attrs = [...node.attributes];
@@ -39,9 +38,6 @@
   smallAngular.directive('ng-show', function(el) {
     console.log('calls directive ng-show on element', el);
   });
-  smallAngular.directive('ng-show', function(el) {
-    console.log('calls directive ng-show on element', el);
-  });
   smallAngular.directive('ng-hide', function(el) {
     console.log('calls directive ng-hide on element', el);
   });
@@ -57,3 +53,7 @@
 
   window.smallAngular = smallAngular;
 })();
+
+window.onload = () => {
+  smallAngular.bootstrap();
+};
