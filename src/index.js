@@ -1,5 +1,5 @@
 (function() {
-  const directives = [];
+  const directives = {};
 
   function findInitialNode() {
     const arrOfAllNodes = Array.from(document.querySelectorAll('*'));
@@ -11,7 +11,12 @@
 
   const smallAngular = {
     directive(name, callback) {
-      directives.push({ name, callback });
+      if (typeof callback !== 'function') {
+        throw new Error('Callback must be a function!');
+      }
+
+      directives[name] = callback;
+      console.log(directives);
     },
     compile(node) {
       const attrs = [...node.attributes];
@@ -44,3 +49,12 @@
   };
   window.smallAngular = smallAngular;
 })();
+
+window.smallAngular.directive('ng-click', function() {console.log(111)});
+window.smallAngular.directive('ng-init', function(node) {
+  node.style.background = 'grey';
+  console.log(222);
+});
+window.smallAngular.directive('ng-repeat', function() {console.log(333)});
+
+//window.smallAngular.compile(document.querySelector('body'));
