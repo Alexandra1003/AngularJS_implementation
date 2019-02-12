@@ -8,7 +8,12 @@
         throw new Error('Callback must be a function!');
       }
 
+      if (name in directives) {
+        throw new Error('Multiple directives are not allowed!');
+      }
+
       directives[name] = callback;
+      console.log(directives)
     },
     compile(node) {
       const attrs = [...node.attributes];
@@ -24,12 +29,16 @@
       if (node) {
         nodeElem.setAttribute('ng-app', '');
       }
+      this.compile(nodeElem);
       nodeElem.querySelectorAll('*').forEach(el => {
         this.compile(el);
       });
     }
   };
 
+  smallAngular.directive('ng-show', function(el) {
+    console.log('calls directive ng-show on element', el);
+  });
   smallAngular.directive('ng-show', function(el) {
     console.log('calls directive ng-show on element', el);
   });
