@@ -14,7 +14,22 @@
       directives.push({ name, callback });
     },
     compile(node) {
-      // do smth
+      const attrs = [...node.attributes];
+      const arrOfDirectives = [];
+
+      attrs.forEach(nodeAttr => {
+        const result = directives.find(directiveObj => {
+          return nodeAttr.name === directiveObj.name;
+        });
+
+        if (result) {
+          arrOfDirectives.push(result);
+        }
+      });
+
+      arrOfDirectives.forEach(directiveObj => {
+        directiveObj.callback(node);
+      });
     },
     bootstrap(node) {
       const nodeElem = node ? node : findInitialNode();
