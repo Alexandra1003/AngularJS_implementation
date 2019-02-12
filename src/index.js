@@ -1,6 +1,14 @@
 (function() {
   const directives = [];
 
+  function findInitialNode() {
+    const arrOfAllNodes = Array.from(document.querySelectorAll('*'));
+
+    return arrOfAllNodes.find(node => {
+      return node.hasAttribute('ng-app');
+    });
+  }
+
   const smallAngular = {
     directive(name, callback) {
       directives.push({ name, callback });
@@ -9,7 +17,14 @@
       // do smth
     },
     bootstrap(node) {
-      // do smth
+      const nodeElem = node ? node : findInitialNode();
+
+      if (node) {
+        nodeElem.setAttribute('ng-app', '');
+      }
+      nodeElem.querySelectorAll('*').forEach(el => {
+        this.compile(el);
+      });
     }
   };
   window.smallAngular = smallAngular;
