@@ -15,8 +15,7 @@
       directives[name] = callback;
     },
     compile(node) {
-      const attrs = [...node.attributes];
-      attrs.forEach(({ name }) => {
+      node.getAttributeNames().forEach(name => {
         if (name in directives) {
           directives[name](node);
         }
@@ -24,10 +23,6 @@
     },
     bootstrap(node) {
       const nodeElem = node ? node : document.querySelector('*[ng-app]');
-
-      if (node) {
-        nodeElem.setAttribute('ng-app', '');
-      }
       this.compile(nodeElem);
       nodeElem.querySelectorAll('*').forEach(el => {
         this.compile(el);
@@ -55,5 +50,5 @@
 })();
 
 window.onload = () => {
-  smallAngular.bootstrap();
+  window.smallAngular.bootstrap();
 };
