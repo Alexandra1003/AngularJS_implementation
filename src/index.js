@@ -33,34 +33,47 @@
       });
     },
     bootstrap(node) {
-      const nodeElem = node ? node : document.querySelector('*[ng-app]');
+      const nodeElem = node || document.querySelector('[ng-app]');
       this.compile(nodeElem);
-      nodeElem.querySelectorAll('*').forEach(el => {
-        this.compile(el);
-      });
+      nodeElem.querySelectorAll('*').forEach(this.compile);
     }
   };
 
   smallAngular.directive('ng-show', function(scope, el) {
     const data = el.getAttribute('ng-show');
     el.style.display = eval(data) ? 'block' : 'none';
-    scope.$watch(data, () => {
+    scope.$watch('ng-show', () => {
       el.style.display = eval(data) ? 'block' : 'none';
     });
   });
+
   smallAngular.directive('ng-hide', function(scope, el) {
     const data = el.getAttribute('ng-hide');
     el.style.display = eval(data) ? 'none' : 'block';
-    scope.$watch(data, () => {
+    scope.$watch('ng-hide', () => {
       el.style.display = eval(data) ? 'none' : 'block';
     });
   });
+
+  smallAngular.directive('ng-bind', function(scope, el) {
+    const data = el.getAttribute('ng-bind');
+
+    if (data in scope) {
+      el.innerHTML = scope[data];
+      scope.$watch('ng-bind', () => {
+        el.innerHTML = scope[data];
+      });
+    }
+  });
+
   smallAngular.directive('ng-model', function(el) {
     console.log('calls directive ng-model on element', el);
   });
+
   smallAngular.directive('ng-click', function(scope, el, attrs) {
     console.log('calls directive ng-click on element', el);
   });
+
   smallAngular.directive('ng-uppercase', function(el) {
     console.log('calls directive ng-uppercase on element', el);
   });
