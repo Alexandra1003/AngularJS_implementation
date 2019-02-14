@@ -66,18 +66,23 @@
     }
   });
 
-  smallAngular.directive('ng-init', function(scope, el) {
+  smallAngular.directive('ng-init', function(el) {
     const data = el.getAttribute('ng-init');
     eval(data);
+  });
+
+  smallAngular.directive('ng-click', function(scope, el) {
+    el.addEventListener('click', () => {
+      const data = el.getAttribute('ng-click');
+      eval(data);
+      scope.$apply();
+    });
   });
 
   smallAngular.directive('ng-model', function(el) {
     console.log('calls directive ng-model on element', el);
   });
 
-  smallAngular.directive('ng-click', function(scope, el, attrs) {
-    console.log('calls directive ng-click on element', el);
-  });
 
   smallAngular.directive('ng-uppercase', function(el) {
     console.log('calls directive ng-uppercase on element', el);
