@@ -41,15 +41,19 @@
     }
   };
 
-  smallAngular.directive('ng-show', function(scope, el, attrs) {
+  smallAngular.directive('ng-show', function(scope, el) {
     const data = el.getAttribute('ng-show');
     el.style.display = eval(data) ? 'block' : 'none';
     scope.$watch(data, () => {
       el.style.display = eval(data) ? 'block' : 'none';
     });
   });
-  smallAngular.directive('ng-hide', function(el) {
-    console.log('calls directive ng-hide on element', el);
+  smallAngular.directive('ng-hide', function(scope, el) {
+    const data = el.getAttribute('ng-hide');
+    el.style.display = eval(data) ? 'none' : 'block';
+    scope.$watch(data, () => {
+      el.style.display = eval(data) ? 'none' : 'block';
+    });
   });
   smallAngular.directive('ng-model', function(el) {
     console.log('calls directive ng-model on element', el);
