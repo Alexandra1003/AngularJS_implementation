@@ -1,6 +1,17 @@
+/* eslint-disable no-eval */
 /* eslint-disable no-console */
 (function() {
   const directives = {};
+  const watchers = [];
+  const rootScope = window;
+
+  rootScope.$watch = (name, watcher) => {
+    watchers.push({ name, watcher });
+  };
+
+  rootScope.$apply = () => {
+    watchers.forEach(({ watcher }) => watcher());
+  };
 
   const smallAngular = {
     directive(name, callback) {
@@ -17,7 +28,7 @@
     compile(node) {
       node.getAttributeNames().forEach(name => {
         if (name in directives) {
-          directives[name](node);
+          directives[name](rootScope, node, null);
         }
       });
     },
@@ -30,7 +41,7 @@
     }
   };
 
-  smallAngular.directive('ng-show', function(el) {
+  smallAngular.directive('ng-show', function(scope, el, attrs) {
     console.log('calls directive ng-show on element', el);
   });
   smallAngular.directive('ng-hide', function(el) {
@@ -39,7 +50,7 @@
   smallAngular.directive('ng-model', function(el) {
     console.log('calls directive ng-model on element', el);
   });
-  smallAngular.directive('ng-click', function(el) {
+  smallAngular.directive('ng-click', function(scope, el, attrs) {
     console.log('calls directive ng-click on element', el);
   });
   smallAngular.directive('ng-uppercase', function(el) {
