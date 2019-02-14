@@ -66,6 +66,11 @@
     }
   });
 
+  smallAngular.directive('ng-init', function(scope, el) {
+    const data = el.getAttribute('ng-init');
+    eval(data);
+  });
+
   smallAngular.directive('ng-model', function(el) {
     console.log('calls directive ng-model on element', el);
   });
