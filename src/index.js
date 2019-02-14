@@ -66,7 +66,7 @@
     }
   });
 
-  smallAngular.directive('ng-init', function(el) {
+  smallAngular.directive('ng-init', function(scope, el) {
     const data = el.getAttribute('ng-init');
     eval(data);
   });
@@ -79,13 +79,14 @@
     });
   });
 
-  smallAngular.directive('ng-model', function(el) {
-    console.log('calls directive ng-model on element', el);
-  });
-
-
-  smallAngular.directive('ng-uppercase', function(el) {
-    console.log('calls directive ng-uppercase on element', el);
+  smallAngular.directive('ng-model', function(scope, el) {
+    const data = el.getAttribute('ng-model');
+    el.addEventListener('input', () => {
+      if (data in scope) {
+        scope[data] = el.value;
+        scope.$apply();
+      }
+    });
   });
 
   window.smallAngular = smallAngular;
