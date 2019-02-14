@@ -42,7 +42,11 @@
   };
 
   smallAngular.directive('ng-show', function(scope, el, attrs) {
-    console.log('calls directive ng-show on element', el);
+    const data = el.getAttribute('ng-show');
+    el.style.display = eval(data) ? 'block' : 'none';
+    scope.$watch(data, () => {
+      el.style.display = eval(data) ? 'block' : 'none';
+    });
   });
   smallAngular.directive('ng-hide', function(el) {
     console.log('calls directive ng-hide on element', el);
