@@ -92,6 +92,15 @@
   window.smallAngular = smallAngular;
 })();
 
+window.smallAngular.directive('make-short', function(scope, el) {
+  const length = el.getAttribute('length') || 10;
+
+  el.innerText = `${el.innerText.substr(0, length)}...`;
+  scope.$watch('make-short', () => {
+    el.innerText = `${el.innerText.substr(0, length)}...`;
+  });
+});
+
 window.onload = () => {
   window.smallAngular.bootstrap();
 };
