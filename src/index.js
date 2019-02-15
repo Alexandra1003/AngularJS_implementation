@@ -13,6 +13,8 @@
     watchers.forEach(({ watcher }) => watcher());
   };
 
+  rootScope.friends = [111, 222, 333];
+
   const smallAngular = {
     directive(name, callback) {
       if (typeof callback !== 'function') {
@@ -69,6 +71,7 @@
   smallAngular.directive('ng-init', function(scope, el) {
     const data = el.getAttribute('ng-init');
     eval(data);
+    scope.$apply();
   });
 
   smallAngular.directive('ng-click', function(scope, el) {
@@ -85,6 +88,37 @@
       if (data in scope) {
         scope[data] = el.value;
         scope.$apply();
+      }
+    });
+  });
+
+  smallAngular.directive('ng-repeat', function(scope, el) {
+    const data = el.getAttribute('ng-repeat');
+    const iterable = eval(data.split(' ')[2]);
+    const parent = el.parentNode;
+
+    for (const item in iterable) {
+      const nextEl = el.cloneNode();
+      nextEl.innerText = iterable[item];
+
+      parent.appendChild(nextEl);
+    }
+
+    parent.removeChild(el);
+
+    scope.$watch('ng-repeat', () => {
+      const data = el.getAttribute('ng-repeat');
+      const iterable = eval(data.split(' ')[2]);
+
+      while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+      }
+
+      for (const item in iterable) {
+        const nextEl = el.cloneNode();
+        nextEl.innerText = iterable[item];
+
+        parent.appendChild(nextEl);
       }
     });
   });
