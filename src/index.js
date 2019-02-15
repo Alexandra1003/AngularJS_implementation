@@ -94,33 +94,26 @@
 
   smallAngular.directive('ng-repeat', function(scope, el) {
     const data = el.getAttribute('ng-repeat');
-    const iterable = eval(data.split(' ')[2]);
+    const iterable = data.split(' ')[2];
     const parent = el.parentNode;
 
-    for (const item in iterable) {
-      const nextEl = el.cloneNode();
-      nextEl.innerText = iterable[item];
+    scope.$watch(iterable, () => {
+      const iterableValue = scope[iterable];
+      const arrOfElems = Array.from(document.querySelectorAll(`[ng-repeat="${data}"]`));
 
-      parent.appendChild(nextEl);
-    }
-
-    parent.removeChild(el);
-
-    scope.$watch('ng-repeat', () => {
-      const data = el.getAttribute('ng-repeat');
-      const iterable = eval(data.split(' ')[2]);
-
-      while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
+      for (const elem of arrOfElems) {
+        elem.remove();
       }
 
-      for (const item in iterable) {
+      for (const item of iterableValue) {
         const nextEl = el.cloneNode();
-        nextEl.innerText = iterable[item];
+        nextEl.innerText = item;
 
         parent.appendChild(nextEl);
       }
     });
+
+    scope.$apply();
   });
 
   window.smallAngular = smallAngular;
