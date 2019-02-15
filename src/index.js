@@ -1,5 +1,4 @@
 /* eslint-disable no-eval */
-/* eslint-disable no-console */
 (function() {
   const directives = {};
   const watchers = [];
@@ -12,8 +11,6 @@
   rootScope.$apply = () => {
     watchers.forEach(({ watcher }) => watcher());
   };
-
-  rootScope.friends = [111, 222, 333];
 
   const smallAngular = {
     directive(name, callback) {
@@ -30,7 +27,7 @@
     compile(node) {
       node.getAttributeNames().forEach(name => {
         if (name in directives) {
-          directives[name](rootScope, node, null);
+          directives[name](rootScope, node);
         }
       });
     },
@@ -44,7 +41,7 @@
   smallAngular.directive('ng-show', function(scope, el) {
     const data = el.getAttribute('ng-show');
     el.style.display = eval(data) ? 'block' : 'none';
-    scope.$watch(() => data, () => {
+    scope.$watch(() => {}, () => {
       el.style.display = eval(data) ? 'block' : 'none';
     });
   });
@@ -52,7 +49,7 @@
   smallAngular.directive('ng-hide', function(scope, el) {
     const data = el.getAttribute('ng-hide');
     el.style.display = eval(data) ? 'none' : 'block';
-    scope.$watch(() => data, () => {
+    scope.$watch(() => {}, () => {
       el.style.display = eval(data) ? 'none' : 'block';
     });
   });
@@ -62,7 +59,7 @@
 
     if (data in scope) {
       el.innerHTML = scope[data];
-      scope.$watch(() => data, () => {
+      scope.$watch(() => {}, () => {
         el.innerHTML = scope[data];
       });
     }
@@ -133,6 +130,10 @@ window.smallAngular.directive('random-color', function(scope, el) {
     const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     el.style.backgroundColor = randomColor;
   });
+});
+
+window.smallAngular.directive('uppercase', function(scope, el) {
+  el.innerHTML = el.innerHTML.toUpperCase();
 });
 
 window.onload = () => {
