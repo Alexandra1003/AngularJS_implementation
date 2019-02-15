@@ -44,7 +44,7 @@
   smallAngular.directive('ng-show', function(scope, el) {
     const data = el.getAttribute('ng-show');
     el.style.display = eval(data) ? 'block' : 'none';
-    scope.$watch('ng-show', () => {
+    scope.$watch(() => data, () => {
       el.style.display = eval(data) ? 'block' : 'none';
     });
   });
@@ -52,7 +52,7 @@
   smallAngular.directive('ng-hide', function(scope, el) {
     const data = el.getAttribute('ng-hide');
     el.style.display = eval(data) ? 'none' : 'block';
-    scope.$watch('ng-hide', () => {
+    scope.$watch(() => data, () => {
       el.style.display = eval(data) ? 'none' : 'block';
     });
   });
@@ -62,7 +62,7 @@
 
     if (data in scope) {
       el.innerHTML = scope[data];
-      scope.$watch('ng-bind', () => {
+      scope.$watch(() => data, () => {
         el.innerHTML = scope[data];
       });
     }
@@ -97,7 +97,7 @@
     const iterable = data.split(' ')[2];
     const parent = el.parentNode;
 
-    scope.$watch(iterable, () => {
+    scope.$watch(() => iterable, () => {
       const iterableValue = scope[iterable];
       const arrOfElems = Array.from(document.querySelectorAll(`[ng-repeat="${data}"]`));
 
@@ -123,7 +123,7 @@ window.smallAngular.directive('make-short', function(scope, el) {
   const length = el.getAttribute('length') || 10;
 
   el.innerText = `${el.innerText.substr(0, length)}...`;
-  scope.$watch('make-short', () => {
+  scope.$watch(() => length, () => {
     el.innerText = `${el.innerText.substr(0, length)}...`;
   });
 });
