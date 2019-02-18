@@ -5,12 +5,13 @@
     <title>SmallAngular</title>
 </head>
 
-<body ng-app ng-init="surname = 'panas'; name ='alex'">
-    <div ng-show="true" random-color> hi Ivan!!! </div>
+<body ng-app ng-init="surname = 'Surname1'; name ='Name'">
+    <div ng-show="true" random-color> hi Ivan!!! Click to change color. </div>
     <input ng-model="name" />
-    <p make-short uppercase>qqq qqq qqq qqq qqq qqq qqq</p>
-    <p ng-bind="name" ng-click='surname = "panas"'></p>
-    <h2 ng-bind="surname" ng-click='surname = "shil"'></h2>
+    <input ng-model="name" />
+    <p make-short uppercase>Make short and uppercase</p>
+    <button ng-bind="surname" ng-click='surname = "Surname1"'></button>
+    <button ng-bind="surname" ng-click='surname = "Surname2"'></button>
     <p make-short length='10'>123456789_10_11_12_13_14</p>
     <ul>
         <li ng-repeat="letter in name"></li>
