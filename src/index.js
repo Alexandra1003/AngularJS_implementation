@@ -58,9 +58,9 @@
     const data = el.getAttribute('ng-bind');
 
     if (data in scope) {
-      el.innerHTML = scope[data];
+      el.innerText = scope[data];
       scope.$watch(() => { }, () => {
-        el.innerHTML = scope[data];
+        el.innerText = scope[data];
       });
     }
   });
