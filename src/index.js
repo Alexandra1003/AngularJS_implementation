@@ -136,7 +136,7 @@ window.smallAngular.directive('random-color', function(scope, el) {
 });
 
 window.smallAngular.directive('uppercase', function(scope, el) {
-  el.innerHTML = el.innerHTML.toUpperCase();
+  el.innerText = el.innerText.toUpperCase();
 });
 
 window.onload = () => {
