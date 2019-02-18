@@ -97,7 +97,7 @@
     const iterable = data.split(' ')[2];
     const parent = el.parentNode;
 
-    scope.$watch(() => iterable, () => {
+    scope.$watch(() => data.split(' ')[2], () => {
       const iterableValue = scope[iterable];
       const arrOfElems = Array.from(document.querySelectorAll(`[ng-repeat="${data}"]`));
 
@@ -123,7 +123,7 @@ window.smallAngular.directive('make-short', function(scope, el) {
   const length = el.getAttribute('length') || 10;
 
   el.innerText = `${el.innerText.substr(0, length)}...`;
-  scope.$watch(() => length, () => {
+  scope.$watch(() => el.getAttribute('length') || 10, () => {
     el.innerText = `${el.innerText.substr(0, length)}...`;
   });
 });
