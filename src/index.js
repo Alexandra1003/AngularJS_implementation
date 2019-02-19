@@ -68,7 +68,6 @@
   smallAngular.directive('ng-init', function(scope, el) {
     const data = el.getAttribute('ng-init');
     eval(data);
-    scope.$apply();
   });
 
   smallAngular.directive('ng-click', function(scope, el) {
@@ -96,14 +95,22 @@
     const data = el.getAttribute('ng-repeat');
     const iterable = data.split(' ')[2];
     const parent = el.parentNode;
+    const arrOfElems = document.querySelectorAll(`[ng-repeat="${data}"]`);
+
+    arrOfElems.forEach(elem => elem.remove());
+
+    for (const item of iterable) {
+      const nextEl = el.cloneNode();
+      nextEl.innerText = item;
+
+      parent.appendChild(nextEl);
+    }
 
     scope.$watch(() => data.split(' ')[2], () => {
       const iterableValue = scope[iterable];
-      const arrOfElems = Array.from(document.querySelectorAll(`[ng-repeat="${data}"]`));
+      const arrOfElems = document.querySelectorAll(`[ng-repeat="${data}"]`);
 
-      for (const elem of arrOfElems) {
-        elem.remove();
-      }
+      arrOfElems.forEach(elem => elem.remove());
 
       for (const item of iterableValue) {
         const nextEl = el.cloneNode();
@@ -112,8 +119,6 @@
         parent.appendChild(nextEl);
       }
     });
-
-    scope.$apply();
   });
 
   window.smallAngular = smallAngular;
