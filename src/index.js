@@ -120,9 +120,12 @@
 window.smallAngular.directive('make-short', function(scope, el) {
   const length = el.getAttribute('length') || 10;
 
-  el.innerText = `${el.innerText.substr(0, length)}...`;
-  scope.$watch(() => el.getAttribute('length') || 10, () => {
-    el.innerText = `${el.innerText.substr(0, length)}...`;
+  const elemContent = el.innerText.substr(0, length);
+  el.innerText = `${elemContent}...`;
+
+  scope.$watch(() => el.getAttribute('length'), () => {
+    const elemContent = el.innerText.substr(0, length);
+    el.innerText = `${elemContent}...`;
   });
 });
 
