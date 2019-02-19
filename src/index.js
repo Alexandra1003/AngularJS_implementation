@@ -59,7 +59,7 @@
 
     if (data in scope) {
       el.innerText = scope[data];
-      scope.$watch(() => { }, () => {
+      scope.$watch(data, () => {
         el.innerText = scope[data];
       });
     }
@@ -87,7 +87,7 @@
         scope.$apply();
       }
     });
-    scope.$watch(() => { }, () => {
+    scope.$watch(data, () => {
       el.value = scope[data];
     });
   });
