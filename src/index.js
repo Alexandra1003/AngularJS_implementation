@@ -41,7 +41,10 @@
   smallAngular.directive('ng-show', function(scope, el) {
     const data = el.getAttribute('ng-show');
     el.style.display = eval(data) ? 'block' : 'none';
-    scope.$watch(() => { }, () => {
+    scope.$watch(() => {
+      eval(data);
+    },
+    () => {
       el.style.display = eval(data) ? 'block' : 'none';
     });
   });
@@ -49,7 +52,10 @@
   smallAngular.directive('ng-hide', function(scope, el) {
     const data = el.getAttribute('ng-hide');
     el.style.display = eval(data) ? 'none' : 'block';
-    scope.$watch(() => { }, () => {
+    scope.$watch(() => {
+      eval(data);
+    },
+    () => {
       el.style.display = eval(data) ? 'none' : 'block';
     });
   });
@@ -57,12 +63,10 @@
   smallAngular.directive('ng-bind', function(scope, el) {
     const data = el.getAttribute('ng-bind');
 
-    if (data in scope) {
+    el.innerText = scope[data];
+    scope.$watch(data, () => {
       el.innerText = scope[data];
-      scope.$watch(data, () => {
-        el.innerText = scope[data];
-      });
-    }
+    });
   });
 
   smallAngular.directive('ng-init', function(scope, el) {
@@ -81,10 +85,8 @@
   smallAngular.directive('ng-model', function(scope, el) {
     const data = el.getAttribute('ng-model');
     el.addEventListener('input', () => {
-      if (data in scope) {
-        scope[data] = el.value;
-        scope.$apply();
-      }
+      scope[data] = el.value;
+      scope.$apply();
     });
     scope.$watch(data, () => {
       el.value = scope[data];
@@ -93,12 +95,12 @@
 
   smallAngular.directive('ng-repeat', function(scope, el) {
     const data = el.getAttribute('ng-repeat');
-    const iterable = data.split(' ')[2];
+    const [, , iterable] = data.split(' ');
     const parent = el.parentNode;
 
     function repeatElem() {
       const iterableValue = scope[iterable];
-      const arrOfElems = document.querySelectorAll(`[ng-repeat="${data}"]`);
+      const arrOfElems = parent.querySelectorAll('[ng-repeat]');
       arrOfElems.forEach(elem => elem.remove());
 
       for (const item of iterableValue) {
@@ -111,7 +113,7 @@
 
     repeatElem();
 
-    scope.$watch(() => data.split(' ')[2], repeatElem);
+    scope.$watch(iterable, repeatElem);
   });
 
   window.smallAngular = smallAngular;
@@ -123,7 +125,7 @@ window.smallAngular.directive('make-short', function(scope, el) {
   const elemContent = el.innerText.substr(0, length);
   el.innerText = `${elemContent}...`;
 
-  scope.$watch(() => el.getAttribute('length'), () => {
+  scope.$watch(() => eval(el.getAttribute('length')), () => {
     const elemContent = el.innerText.substr(0, length);
     el.innerText = `${elemContent}...`;
   });
